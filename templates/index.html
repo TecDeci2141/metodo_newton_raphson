@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Calculadora educativa del método Newton-Raphson multivariable."
+    />
+    <title>Newton-Raphson Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <script defer src="{{ url_for('static', filename='js/app.js') }}"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="/"
+          ><span class="brand-mark">N</span
+          ><span>NUMERICAL<span class="brand-light">LAB</span></span></a
+        >
+        <div class="side-label">WORKSPACE</div>
+        <a class="nav-item active" href="#"><span>⌘</span> Calculadora</a>
+        <div class="side-label side-label-spaced">MÉTODOS</div>
+        <div class="method-pill">
+          <span class="method-dot"></span> Newton-Raphson
+        </div>
+        <div class="sidebar-bottom">
+          <div class="status-dot"></div>
+          <span>Motor matemático listo</span>
+          <small>v1.0 · Aplicación educativa</small>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div>
+            <span class="breadcrumb">Workspace</span
+            ><span class="crumb-sep">/</span
+            ><strong>Newton-Raphson multivariable</strong>
+          </div>
+          <div class="top-right">
+            <span class="live-indicator"></span> SISTEMA OPERATIVO
+          </div>
+        </header>
+
+        <section class="hero">
+          <div class="eyebrow">
+            <span class="eyebrow-line"></span> ANÁLISIS NUMÉRICO · SOLVER
+          </div>
+          <h1>Newton-Raphson <em>Multivariable.</em></h1>
+          <p>
+            Construye tu sistema, calcula el Jacobiano y sigue la convergencia
+            iteración por iteración.
+          </p>
+        </section>
+
+        <section class="workspace-grid">
+          <div class="panel setup-panel">
+            <div class="panel-heading">
+              <div>
+                <span class="step-index">01</span>
+                <h2>Configura tu sistema</h2>
+              </div>
+              <span class="panel-tag">INPUT</span>
+            </div>
+            <div class="field-row">
+              <label for="dimension">Variables / ecuaciones</label>
+              <select id="dimension">
+                <option value="1">1 variable</option>
+                <option value="2" selected>2 variables</option>
+                <option value="3">3 variables</option>
+                <option value="4">4 variables</option>
+                <option value="5">5 variables</option>
+                <option value="6">6 variables</option>
+                <option value="7">7 variables</option>
+                <option value="8">8 variables</option>
+              </select>
+            </div>
+            <div class="equation-title">
+              <span>FUNCIONES DEL SISTEMA</span><span>F(x) = 0</span>
+            </div>
+            <div id="equations" class="equation-list"></div>
+            <div class="divider"></div>
+            <div class="section-subtitle">PUNTO INICIAL <span>x⁽⁰⁾</span></div>
+            <div id="initial-values" class="initial-grid"></div>
+            <div class="divider"></div>
+            <div class="section-subtitle">PARÁMETROS DEL MÉTODO</div>
+            <div class="parameter-grid">
+              <div class="field">
+                <label for="tolerance">Tolerancia</label
+                ><input
+                  id="tolerance"
+                  type="number"
+                  min="1e-14"
+                  max="1e-2"
+                  step="any"
+                  value="1e-10"
+                />
+              </div>
+              <div class="field">
+                <label for="max-iter">Máx. iteraciones</label
+                ><input
+                  id="max-iter"
+                  type="number"
+                  min="1"
+                  max="200"
+                  value="50"
+                />
+              </div>
+            </div>
+            <div class="field name-field">
+              <label for="system-name">Nombre del sistema</label
+              ><input
+                id="system-name"
+                value="Sistema del alumno"
+                maxlength="120"
+              />
+            </div>
+            <button id="solve-btn" class="primary-button">
+              <span>Calcular solución</span><span class="button-arrow">↗</span>
+            </button>
+            <p class="input-hint">
+              Funciones disponibles: sin, cos, tan, exp, log, sqrt, pi. Usa **
+              para potencias.
+            </p>
+          </div>
+
+          <div class="right-column">
+            <div class="panel theory-panel">
+              <div class="panel-heading">
+                <div>
+                  <span class="step-index">02</span>
+                  <h2>Fundamento del método</h2>
+                </div>
+                <span class="panel-tag">REFERENCE</span>
+              </div>
+              <div class="formula-card">
+                <div class="formula-label">ITERACIÓN DE NEWTON</div>
+                <div class="formula-main">
+                  J(x<sub>k</sub>) Δx = −F(x<sub>k</sub>)
+                </div>
+                <div class="formula-sub">
+                  x<sub>k+1</sub> = x<sub>k</sub> + Δx
+                </div>
+              </div>
+              <p class="theory-copy">
+                En cada paso se linealiza el sistema mediante su matriz
+                Jacobiana y se resuelve un sistema lineal para actualizar la
+                aproximación.
+              </p>
+              <div class="theory-foot">
+                <span>01</span> Evaluar F y J <i></i><span>02</span> Resolver Δx
+                <i></i><span>03</span> Actualizar x
+              </div>
+            </div>
+            <div class="panel tips-panel">
+              <div class="tip-icon">i</div>
+              <div>
+                <strong>Antes de ejecutar</strong>
+                <p>
+                  El método puede divergir si el punto inicial está lejos de la
+                  raíz. Un Jacobiano singular impide continuar.
+                </p>
+              </div>
+            </div>
+            <div class="panel result-placeholder" id="empty-state">
+              <div class="empty-symbol">∑</div>
+              <h3>Tu análisis aparecerá aquí</h3>
+              <p>
+                Define las ecuaciones y ejecuta el método para visualizar
+                resultados, historial y desglose.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="results" class="results-section hidden">
+          <div class="results-heading">
+            <div>
+              <span class="step-index">03</span>
+              <h2>Resultados del análisis</h2>
+            </div>
+            <button id="export-btn" class="secondary-button">
+              ↓ Exportar Excel educativo
+            </button>
+          </div>
+          <div id="status-card" class="status-card"></div>
+          <div id="solution-cards" class="solution-grid"></div>
+          <div class="result-grid">
+            <div class="panel result-panel">
+              <div class="panel-heading">
+                <div>
+                  <span class="step-index">04</span>
+                  <h2>Sistema y Jacobiano</h2>
+                </div>
+              </div>
+              <div id="symbolic-system"></div>
+            </div>
+            <div class="panel result-panel">
+              <div class="panel-heading">
+                <div>
+                  <span class="step-index">05</span>
+                  <h2>Convergencia</h2>
+                </div>
+              </div>
+              <div id="convergence-chart" class="chart-wrap"></div>
+            </div>
+          </div>
+          <div class="panel result-panel history-panel">
+            <div class="panel-heading">
+              <div>
+                <span class="step-index">06</span>
+                <h2>Historial de iteraciones</h2>
+              </div>
+              <span class="panel-tag">ITERATION LOG</span>
+            </div>
+            <div class="table-wrap"><table id="history-table"></table></div>
+          </div>
+          <div class="panel result-panel detail-panel">
+            <div class="panel-heading">
+              <div>
+                <span class="step-index">07</span>
+                <h2>Desglose paso a paso</h2>
+              </div>
+              <span class="panel-tag">LEARNING MODE</span>
+            </div>
+            <div id="iteration-details"></div>
+          </div>
+        </section>
+        <footer>
+          <span>NUMERICAL<span class="brand-light">LAB</span></span
+          ><span>Newton-Raphson multivariable · Herramienta educativa</span>
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

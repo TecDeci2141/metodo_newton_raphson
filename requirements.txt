@@ -1,0 +1,4 @@
+Flask>=3.0,<4
+numpy>=1.26
+sympy>=1.12
+openpyxl>=3.1
